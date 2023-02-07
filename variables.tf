@@ -32,15 +32,15 @@ variable "security_phone_number" {
   default     = null
 }
 
-variable "operations_email" {
+variable "billing_email" {
   type        = string
-  description = "Operations Email"
+  description = "Billing  Email"
   default     = null
 }
 
-variable "operations_phone_number" {
+variable "billing_phone_number" {
   type        = string
-  description = "Operations phone number"
+  description = "Billing  phone number"
   default     = null
 }
 

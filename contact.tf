@@ -13,7 +13,7 @@ resource "aws_account_alternate_contact" "operations" {
   phone_number  = var.operations_phone_number
 }
 
-resource "aws_account_alternate_contact" "operations" {
+resource "aws_account_alternate_contact" "billing" {
   count                  = var.create_account_alternate_contact ? 1 : 0
   alternate_contact_type = "BILLING"
 
@@ -23,7 +23,7 @@ resource "aws_account_alternate_contact" "operations" {
   phone_number  = var.billing_phone_number
 }
 
-resource "aws_account_alternate_contact" "operations" {
+resource "aws_account_alternate_contact" "security" {
   count                  = var.create_account_alternate_contact ? 1 : 0
   alternate_contact_type = "SECURITY"
 
