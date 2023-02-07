@@ -100,7 +100,7 @@ variable "aws-free-tier" {
   description = "Is AWS Free Tier Account"
 }
 
-variable "var.max_budget_notification" {
+variable "max_budget_notification" {
   type        = number
   description = "Max Budget Notification"
   default     = 10
