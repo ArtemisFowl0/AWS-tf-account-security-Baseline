@@ -21,10 +21,6 @@ resource "aws_security_group" "delete_default_security_group" {
 
   security_group_id = data.aws_vpc.default.default_security_group_id
 
-  depends_on = [
-    aws_subnet.delete_default_subnets,
-  ]
-
   lifecycle {
     create_before_destroy = true
   }
