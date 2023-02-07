@@ -11,31 +11,37 @@ variable "create_account_alternate_contact" {
 variable "operations_email" {
   type        = string
   description = "Operations Email"
+  default     = null
 }
 
 variable "operations_phone_number" {
   type        = string
   description = "Operations phone number"
+  default     = null
 }
 
 variable "security_email" {
   type        = string
   description = "Security Email"
+  default     = null
 }
 
 variable "security_phone_number" {
   type        = string
   description = "Security phone number"
+  default     = null
 }
 
 variable "operations_email" {
   type        = string
   description = "Operations Email"
+  default     = null
 }
 
 variable "operations_phone_number" {
   type        = string
   description = "Operations phone number"
+  default     = null
 }
 
 ##############################################################################################################

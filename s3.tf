@@ -78,8 +78,8 @@ data "aws_iam_policy_document" "combined" {
       values   = ["false"]
     }
   }
-  
-    statement {
+
+  statement {
     effect    = "Allow"
     actions   = ["s3:GetBucketAcl"]
     resources = ["arn:aws:s3:::${module.cloudtrail_s3_bucket.bucket_name}"]
