@@ -4,7 +4,7 @@
 
 #View account_infos in the organization
 output "account_infos" {
-  value = aws_organizations_organization.org.accounts[*]
+  value = aws_organizations_organization.org[*].accounts[*]
 }
 
 ##############################################################################################################
