@@ -5,10 +5,10 @@
 resource "aws_cloudtrail" "default" {
   count          = var.create_cloudtrail ? 1 : 0
   name           = "cloudtrail"
-  s3_bucket_name = module.cloudtrail_s3_bucket.bucket_name
+  s3_bucket_name = "cloudtrail-logs-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"
 
-  cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.cloudtrail.arn}:*"
-  cloud_watch_logs_role_arn  = aws_iam_role.cloudtrail.arn
+  cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.cloudtrail[0][0].arn}:*"
+  cloud_watch_logs_role_arn  = aws_iam_role.cloudtrail[0].arn
   enable_log_file_validation = true
   enable_logging             = true
 
@@ -70,7 +70,7 @@ data "aws_iam_policy_document" "cloudtrail_assume_role" {
 # Role policy attachments
 resource "aws_iam_role_policy_attachment" "cloudtrail" {
   count      = var.create_cloudtrail ? 1 : 0
-  role       = aws_iam_role.cloudtrail.id
+  role       = aws_iam_role.cloudtrail.arn[0].id
   policy_arn = aws_iam_policy.cloudtrail.arn
 }
 
@@ -90,14 +90,14 @@ data "aws_iam_policy_document" "cloudtrail" {
   statement {
     effect    = "Allow"
     actions   = ["logs:CreateLogStream"]
-    resources = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:${aws_cloudwatch_log_group.cloudtrail.name}:log-stream:*"]
+    resources = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:${aws_cloudwatch_log_group.cloudtrail[0].name}:log-stream:*"]
   }
 
   statement {
     effect  = "Allow"
     actions = ["logs:PutLogEvents"]
     #tfsec:ignore:aws-iam-no-policy-wildcards
-    resources = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:${aws_cloudwatch_log_group.cloudtrail.name}:log-stream:*"]
+    resources = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:${aws_cloudwatch_log_group.cloudtrail[0].name}:log-stream:*"]
   }
 }
 
