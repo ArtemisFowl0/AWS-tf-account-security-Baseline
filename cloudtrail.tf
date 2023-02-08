@@ -108,7 +108,7 @@ resource "aws_cloudwatch_log_group" "cloudtrail" {
   count             = var.create_cloudtrail && var.create_cloudwatch ? 1 : 0
   name              = "cloudtrail"
   retention_in_days = 0
-  kms_key_id        = aws_kms_key.cloudtrail.arn
+  kms_key_id        = aws_kms_key.cloudtrail[0].arn
   tags = merge(var.tags, {
     Name = "CloudTrail"
   })

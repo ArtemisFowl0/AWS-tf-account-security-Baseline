@@ -3,9 +3,9 @@
 ##############################################################################################################
 
 resource "aws_subnet" "delete_default_subnets" {
-  count = length(data.aws_vpc.all_vpcs.subnet_ids)
+  count = length(data.aws_vpc.default.subnet_ids)
 
-  subnet_id = data.aws_vpc.all_vpcs.subnet_ids[count.index]
+  subnet_id = data.aws_vpc.default.subnet_ids[count.index]
 
   depends_on = [
     aws_security_group.delete_default_security_group,
@@ -17,9 +17,9 @@ resource "aws_subnet" "delete_default_subnets" {
 }
 
 resource "aws_security_group" "delete_default_security_group" {
-  vpc_id = data.aws_vpc.all_vpcs.id
+  vpc_id = data.aws_vpc.default.id
 
-  security_group_id = data.aws_vpc.all_vpcs.default_security_group_id
+  security_group_id = data.aws_security_groups.default.ids[*]
 
   lifecycle {
     create_before_destroy = true
@@ -27,7 +27,7 @@ resource "aws_security_group" "delete_default_security_group" {
 }
 
 resource "aws_vpc" "delete_default_vpc" {
-  vpc_id = data.aws_vpc.all_vpcs.id
+  vpc_id = data.aws_vpc.default.id
 
   depends_on = [
     aws_security_group.delete_default_security_group,

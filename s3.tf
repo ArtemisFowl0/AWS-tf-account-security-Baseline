@@ -25,13 +25,13 @@ resource "aws_s3_bucket" "default" {
 
 resource "aws_s3_bucket_acl" "default" {
   count  = var.create_cloudtrail ? 1 : 0
-  bucket = aws_s3_bucket.default.id
+  bucket = aws_s3_bucket.default[0].id
   acl    = "log-delivery-write"
 }
 
 resource "aws_s3_bucket_versioning" "default" {
 
-  bucket = aws_s3_bucket.default.id
+  bucket = aws_s3_bucket.default[0].id
 
   versioning_configuration {
     status = "Enabled"
@@ -40,7 +40,7 @@ resource "aws_s3_bucket_versioning" "default" {
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "default" {
   count  = var.create_cloudtrail ? 1 : 0
-  bucket = aws_s3_bucket.default.id
+  bucket = aws_s3_bucket.default[0].id
 
   rule {
     apply_server_side_encryption_by_default {
@@ -51,7 +51,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "default" {
 
 resource "aws_s3_bucket_policy" "default" {
   count  = var.create_cloudtrail ? 1 : 0
-  bucket = aws_s3_bucket.default.id
+  bucket = aws_s3_bucket.default[0].id
   policy = data.aws_iam_policy_document.combined.json
 }
 
@@ -82,7 +82,7 @@ data "aws_iam_policy_document" "combined" {
   statement {
     effect    = "Allow"
     actions   = ["s3:GetBucketAcl"]
-    resources = ["arn:aws:s3:::${module.cloudtrail_s3_bucket.bucket_name}"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.default[0].bucket_name}"]
 
     principals {
       type        = "Service"
@@ -93,7 +93,7 @@ data "aws_iam_policy_document" "combined" {
   statement {
     effect    = "Allow"
     actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::${module.cloudtrail_s3_bucket.bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.default[0].bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
 
     principals {
       type        = "Service"
@@ -110,7 +110,7 @@ data "aws_iam_policy_document" "combined" {
 
 resource "aws_s3_bucket_public_access_block" "default" {
   count  = var.create_cloudtrail ? 1 : 0
-  bucket = aws_s3_bucket.default.id
+  bucket = aws_s3_bucket.default[0].id
 
   block_public_acls       = true
   block_public_policy     = true
