@@ -63,8 +63,8 @@ data "aws_iam_policy_document" "combined" {
     effect  = "Deny"
     actions = ["s3:*"]
     resources = [
-      "${aws_s3_bucket.default.arn}/*",
-      "${aws_s3_bucket.default.arn}"
+      "${aws_s3_bucket.default[0].arn}/*",
+      "${aws_s3_bucket.default[0].arn}"
     ]
 
     principals {
@@ -82,7 +82,7 @@ data "aws_iam_policy_document" "combined" {
   statement {
     effect    = "Allow"
     actions   = ["s3:GetBucketAcl"]
-    resources = ["arn:aws:s3:::${aws_s3_bucket.default[0].bucket_name}"]
+    resources = ["arn:aws:s3:::cloudtrail-logs-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"]
 
     principals {
       type        = "Service"
@@ -93,7 +93,7 @@ data "aws_iam_policy_document" "combined" {
   statement {
     effect    = "Allow"
     actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::${aws_s3_bucket.default[0].bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
+    resources = ["arn:aws:s3:::cloudtrail-logs-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
 
     principals {
       type        = "Service"

@@ -15,7 +15,7 @@ resource "aws_subnet" "delete_default_subnets" {
     create_before_destroy = true
   }
 }
-
+/*
 resource "aws_security_group" "delete_default_security_group" {
   vpc_id = data.aws_vpc.default.id
 
@@ -25,7 +25,7 @@ resource "aws_security_group" "delete_default_security_group" {
     create_before_destroy = true
   }
 }
-
+*/
 resource "aws_vpc" "delete_default_vpc" {
   vpc_id = data.aws_vpc.default.id
 
