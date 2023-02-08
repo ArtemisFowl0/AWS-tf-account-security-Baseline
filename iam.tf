@@ -118,18 +118,18 @@ resource "aws_iam_group_membership" "team" {
 #########################
 # Read_Only #
 #########################
-resource "aws_iam_group" "iam_user_change_password" {
+resource "aws_iam_group" "read_only" {
   name = "IAMUserChangePassword"
   path = "/"
 }
 
 # Group policy attachments
-resource "aws_iam_group_policy_attachment" "iam_user_change_password" {
-  group      = aws_iam_group.iam_user_change_password.name
+resource "aws_iam_group_policy_attachment" "read_only" {
+  group      = aws_iam_group.read_only.name
   policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
 }
 
-resource "aws_iam_user_group_membership" "billing" {
+resource "aws_iam_user_group_membership" "read_only" {
   user = aws_iam_user.read_only.name
 
   groups = [
