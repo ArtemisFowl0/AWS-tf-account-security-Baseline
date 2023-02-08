@@ -69,7 +69,7 @@ data "aws_iam_policy_document" "cloudtrail_assume_role" {
 # Role policy attachments
 resource "aws_iam_role_policy_attachment" "cloudtrail" {
   count      = var.create_cloudtrail ? 1 : 0
-  role       = aws_iam_role.cloudtrail.arn.id
+  role       = aws_iam_role.cloudtrail.arn
   policy_arn = aws_iam_policy.cloudtrail[0].arn
 }
 

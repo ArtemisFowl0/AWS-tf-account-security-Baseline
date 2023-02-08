@@ -12,11 +12,11 @@ output "account_infos" {
 ##############################################################################################################
 
 output "cloudtrail_name" {
-  value = aws_cloudtrail.default.name
+  value = aws_cloudtrail.default[0].name
 }
 
 output "s3_bucket_name" {
-  value = aws_cloudtrail.default.s3_bucket_name
+  value = aws_cloudtrail.default[0].s3_bucket_name
 }
 
 output "kms_key_arn" {
