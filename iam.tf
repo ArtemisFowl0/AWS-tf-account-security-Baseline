@@ -11,10 +11,10 @@ resource "aws_iam_user" "admin" {
 }
 
 #########
-# Enginner #
+# Billing #
 #########
-resource "aws_iam_user" "engineer" {
-  name = "Engineer"
+resource "aws_iam_user" "billing" {
+  name = "Billing"
   path = "/"
 }
 
@@ -44,6 +44,15 @@ resource "aws_iam_group_policy_attachment" "admin" {
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
+resource "aws_iam_user_group_membership" "admin" {
+  user = aws_iam_user.admin.name
+
+  groups = [
+    aws_iam_group.admin.name,
+    aws_iam_group.aws_organisations_admin.name,
+  ]
+}
+
 #########################
 # AWSOrganisationsAdmin #
 #########################
@@ -58,11 +67,6 @@ resource "aws_iam_group_policy_attachment" "aws_organisations_admin_resource_gro
   policy_arn = "arn:aws:iam::aws:policy/ResourceGroupsandTagEditorFullAccess"
 }
 
-resource "aws_iam_group_policy_attachment" "aws_organisations_admin_custom" {
-  group      = aws_iam_group.aws_organisations_admin.name
-  policy_arn = aws_iam_policy.aws_organisations_admin.arn
-}
-
 #####################
 # BillingFullAccess #
 #####################
@@ -74,7 +78,15 @@ resource "aws_iam_group" "billing_full_access" {
 # Group policy attachments
 resource "aws_iam_group_policy_attachment" "billing_full_access" {
   group      = aws_iam_group.billing_full_access.name
-  policy_arn = aws_iam_policy.billing_full_access.arn
+  policy_arn = "arn:aws:iam::aws:policy/AWSBillingConductorFullAccess"
+}
+
+resource "aws_iam_user_group_membership" "billing" {
+  user = aws_iam_user.billing.name
+
+  groups = [
+    aws_iam_group.billing_full_access.name,
+  ]
 }
 
 #########################
@@ -89,6 +101,40 @@ resource "aws_iam_group" "iam_user_change_password" {
 resource "aws_iam_group_policy_attachment" "iam_user_change_password" {
   group      = aws_iam_group.iam_user_change_password.name
   policy_arn = "arn:aws:iam::aws:policy/IAMUserChangePassword"
+}
+
+resource "aws_iam_group_membership" "team" {
+  name = "tf-testing-group-membership"
+
+  users = [
+    aws_iam_user.admin.name,
+    aws_iam_user.billing.name,
+    aws_iam_user.read_only.name,
+  ]
+
+  group = aws_iam_group.iam_user_change_password.name
+}
+
+#########################
+# Read_Only #
+#########################
+resource "aws_iam_group" "iam_user_change_password" {
+  name = "IAMUserChangePassword"
+  path = "/"
+}
+
+# Group policy attachments
+resource "aws_iam_group_policy_attachment" "iam_user_change_password" {
+  group      = aws_iam_group.iam_user_change_password.name
+  policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+}
+
+resource "aws_iam_user_group_membership" "billing" {
+  user = aws_iam_user.read_only.name
+
+  groups = [
+    aws_iam_group.iam_user_change_password.name,
+  ]
 }
 
 ##############################################################################################################

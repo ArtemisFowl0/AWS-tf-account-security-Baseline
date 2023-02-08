@@ -1,7 +1,7 @@
 ##############################################################################################################
 # ACCT.10 – Configure AWS Budgets to monitor your spending                                                   # 
 ##############################################################################################################
-
+/*
 resource "aws_budgets_budget" "zero_spend_budget_aws_free_tier" {
   count       = var.aws-free-tier ? 0 : 1
   name        = "Zero Spend Budget"
@@ -53,3 +53,4 @@ resource "aws_budgets_budget" "zero_spend_budget" {
     }
   }
 }
+*/

@@ -86,6 +86,12 @@ variable "create_cloudwatch" {
   default     = true
 }
 
+variable "force_destroy" {
+  type        = bool
+  description = "Force destroy"
+  default     = false
+}
+
 ##############################################################################################################
 # ACCT.10 – Configure AWS Budgets to monitor your spending                                                   # 
 ##############################################################################################################

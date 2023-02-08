@@ -20,5 +20,5 @@ output "s3_bucket_name" {
 }
 
 output "kms_key_arn" {
-  value = aws_kms_key.cloudtrail.arn
+  value = aws_kms_key.cloudtrail[0].arn
 }

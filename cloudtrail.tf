@@ -37,7 +37,7 @@ resource "aws_cloudtrail" "default" {
   is_multi_region_trail         = true
   is_organization_trail         = false
 
-  kms_key_id = aws_kms_key.cloudtrail.arn
+  kms_key_id = aws_kms_key.cloudtrail[0].arn
   tags = merge(var.tags, {
     Name = "CloudTrail"
   })

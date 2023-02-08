@@ -1,7 +1,7 @@
 ##############################################################################################################
 # ACCT.12 – Monitor for and resolve high-risk issues by using Trusted Advisor                                # 
 ##############################################################################################################
-
+/*
 data "aws_trusted_advisor_check_result" "example" {
   check_id = "test123"
 
@@ -10,3 +10,4 @@ data "aws_trusted_advisor_check_result" "example" {
     values = ["warning", "error"]
   }
 }
+*/

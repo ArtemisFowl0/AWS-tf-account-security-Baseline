@@ -34,7 +34,7 @@ POLICY
 resource "aws_organizations_policy_attachment" "restrict_use_of_root" {
   count     = var.create_organization && var.restrict_use_of_root ? 1 : 0
   policy_id = aws_organizations_policy.restrict_use_of_root[0].id
-  target_id = aws_organizations_organization.org.roots[0].id
+  target_id = aws_organizations_organization.org[0].roots[0].id
 }
 
 ##############################################################################################################
@@ -71,5 +71,5 @@ POLICY
 resource "aws_organizations_policy_attachment" "require_mfa" {
   count     = var.create_organization && var.require_mfa ? 1 : 0
   policy_id = aws_organizations_policy.require_mfa[0].id
-  target_id = aws_organizations_organization.org.roots[0].id
+  target_id = aws_organizations_organization.org[0].roots[0].id
 }
