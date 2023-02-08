@@ -7,8 +7,8 @@ resource "aws_cloudtrail" "default" {
   name           = "cloudtrail"
   s3_bucket_name = "cloudtrail-logs-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"
 
-  cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.cloudtrail[0][0].arn}:*"
-  cloud_watch_logs_role_arn  = aws_iam_role.cloudtrail[0].arn
+  cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.cloudtrail[0].arn}:*"
+  cloud_watch_logs_role_arn  = aws_iam_role.cloudtrail.arn
   enable_log_file_validation = true
   enable_logging             = true
 
@@ -47,7 +47,6 @@ resource "aws_cloudtrail" "default" {
 # CloudTrail role #
 ###################
 resource "aws_iam_role" "cloudtrail" {
-  count              = var.create_cloudtrail ? 1 : 0
   name               = "cloudtrail"
   assume_role_policy = data.aws_iam_policy_document.cloudtrail_assume_role.json
   tags = merge(var.tags, {
@@ -70,8 +69,8 @@ data "aws_iam_policy_document" "cloudtrail_assume_role" {
 # Role policy attachments
 resource "aws_iam_role_policy_attachment" "cloudtrail" {
   count      = var.create_cloudtrail ? 1 : 0
-  role       = aws_iam_role.cloudtrail.arn[0].id
-  policy_arn = aws_iam_policy.cloudtrail.arn
+  role       = aws_iam_role.cloudtrail.arn.id
+  policy_arn = aws_iam_policy.cloudtrail[0].arn
 }
 
 #######################

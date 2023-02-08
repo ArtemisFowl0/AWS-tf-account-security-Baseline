@@ -4,7 +4,7 @@ data "aws_vpc" "default" {default = true}
 data "aws_security_groups" "default" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.all_vpcs.id]
+    values = [data.aws_vpc.default.id]
   }
 }
 
